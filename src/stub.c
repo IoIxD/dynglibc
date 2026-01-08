@@ -171,7 +171,6 @@ static struct {
   void (*__assert_fail)(const char *assertion, const char *file,
                         unsigned int line, const char *function);
   void (*__builtin_assert)(int expression);
-  void (*assert_perror)(int errnum);
   double (*atan)(double x);
   double (*atan2)(double y, double x);
   double (*atan2pi)(double y, double x);
@@ -269,30 +268,6 @@ static struct {
   double (*cospi)(double x);
   _Complex double (*cpow)(_Complex double base, _Complex double power);
   _Complex double (*cproj)(_Complex double z);
-  cpu_set_t *(*CPU_ALLOC)(size_t count);
-  size_t (*CPU_ALLOC_SIZE)(size_t count);
-  cpu_set_t *(*CPU_AND)(cpu_set_t *dest, cpu_set_t *src1, cpu_set_t *src2);
-  cpu_set_t *(*CPU_AND_S)(size_t size, cpu_set_t *dest, cpu_set_t *src1,
-                          cpu_set_t *src2);
-  void (*CPU_CLR)(int cpu, cpu_set_t *set);
-  void (*CPU_CLR_S)(int cpu, size_t size, cpu_set_t *set);
-  int (*CPU_COUNT)(const cpu_set_t *set);
-  int (*CPU_COUNT_S)(size_t size, const cpu_set_t *set);
-  int (*CPU_EQUAL)(cpu_set_t *src1, cpu_set_t *src2);
-  int (*CPU_EQUAL_S)(size_t size, cpu_set_t *src1, cpu_set_t *src2);
-  void (*CPU_FREE)(cpu_set_t *set);
-  int (*CPU_ISSET)(int cpu, const cpu_set_t *set);
-  int (*CPU_ISSET_S)(int cpu, size_t size, const cpu_set_t *set);
-  cpu_set_t *(*CPU_OR)(cpu_set_t *dest, cpu_set_t *src1, cpu_set_t *src2);
-  cpu_set_t *(*CPU_OR_S)(size_t size, cpu_set_t *dest, cpu_set_t *src1,
-                         cpu_set_t *src2);
-  void (*CPU_SET)(int cpu, cpu_set_t *set);
-  void (*CPU_SET_S)(int cpu, size_t size, cpu_set_t *set);
-  cpu_set_t *(*CPU_XOR)(cpu_set_t *dest, cpu_set_t *src1, cpu_set_t *src2);
-  cpu_set_t *(*CPU_XOR_S)(size_t size, cpu_set_t *dest, cpu_set_t *src1,
-                          cpu_set_t *src2);
-  void (*CPU_ZERO)(cpu_set_t *set);
-  void (*CPU_ZERO_S)(size_t size, cpu_set_t *set);
   double (*creal)(_Complex double z);
   int (*creat)(const char *filename, mode_t mode);
   int (*creat64)(const char *filename, mode_t mode);
@@ -320,7 +295,6 @@ static struct {
   double (*drand48)(void);
   int (*drand48_r)(struct drand48_data *buffer, double *result);
   double (*drem)(double numerator, double denominator);
-  mode_t (*DTTOIF)(int dtype);
   int (*dup)(int old);
   int (*dup2)(int old, int new);
   int (*dup3)(int old, int new, int flags);
@@ -385,10 +359,6 @@ static struct {
   char *(*fcvt)(double value, int ndigit, int *decpt, int *neg);
   int (*fcvt_r)(double value, int ndigit, int *decpt, int *neg, char *buf,
                 size_t len);
-  void (*FD_CLR)(int filedes, fd_set *set);
-  int (*FD_ISSET)(int filedes, const fd_set *set);
-  void (*FD_SET)(int filedes, fd_set *set);
-  void (*FD_ZERO)(fd_set *set);
   int (*fdatasync)(int fildes);
   double (*fdim)(double x, double y);
   float (*fdiv)(double x, double y);
@@ -468,7 +438,7 @@ static struct {
   int (*forkpty)(int *amaster, char *name, const struct termios *termp,
                  const struct winsize *winp);
   long int (*fpathconf)(int filedes, int parameter);
-  int (*__builtin_fpclassify)(int, int, int, int, int, ...);
+  // int (*__builtin_fpclassify)(int, int, int, int, int, ...);
   int (*fprintf)(FILE *stream, const char *template, ...);
   int (*fputc)(int c, FILE *stream);
   int (*fputc_unlocked)(int c, FILE *stream);
@@ -537,7 +507,7 @@ static struct {
   ssize_t (*getdelim)(char **restrict lineptr, size_t *restrict n,
                       int delimiter, FILE *restrict stream);
   ssize_t (*getdents64)(int fd, void *buffer, size_t length);
-  int (*getdomainnname)(char *name, size_t length);
+  int (*getdomainname)(char *name, size_t length);
   gid_t (*getegid)(void);
   int (*getentropy)(void *buffer, size_t length);
   char *(*getenv)(const char *name);
@@ -638,7 +608,6 @@ static struct {
   pid_t (*gettid)(void);
   int (*gettimeofday)(struct timeval *tp, void *tzp);
   uid_t (*getuid)(void);
-  mode_t (*getumask)(void);
   struct utmp *(*getutent)(void);
   int (*getutent_r)(struct utmp *buffer, struct utmp **result);
   struct utmp *(*getutid)(const struct utmp *id);
@@ -688,7 +657,6 @@ static struct {
   char *(*if_indextoname)(unsigned int ifindex, char *ifname);
   struct if_nameindex *(*if_nameindex)(void);
   unsigned int (*if_nametoindex)(const char *ifname);
-  int (*IFTODT)(mode_t mode);
   int (*ilogb)(double x);
   imaxdiv_t (*imaxdiv)(intmax_t numerator, intmax_t denominator);
   char *(*index)(const char *string, int c);
@@ -715,21 +683,11 @@ static struct {
   int (*isblank)(int c);
   int (*iscntrl)(int c);
   int (*isdigit)(int c);
-  int (*__builtin_isfinite)(double x);
   int (*isgraph)(int c);
-  int (*__builtin_isgreater)(double x, double y);
-  int (*__builtin_isgreaterequal)(double x, double y);
-  int (*__builtin_isinf_sign)(double x);
-  int (*__builtin_isless)(double x, double y);
-  int (*__builtin_islessequal)(double x, double y);
-  int (*__builtin_islessgreater)(double x, double y);
   int (*islower)(int c);
-  int (*__builtin_isnan)(double x);
-  int (*__builtin_isnormal)(double x);
   int (*isprint)(int c);
   int (*ispunct)(int c);
   int (*isspace)(int c);
-  int (*__builtin_isunordered)(double x, double y);
   int (*isupper)(int c);
   int (*iswalnum)(wint_t wc);
   int (*iswalpha)(wint_t wc);
@@ -893,32 +851,29 @@ static struct {
   uint16_t (*ntohs)(uint16_t netshort);
   int (*ntp_adjtime)(struct timex *tptr);
   int (*ntp_gettime)(struct ntptimeval *tptr);
-  void (*obstack_1grow)(struct obstack *obstack_ptr, char c);
-  void (*obstack_1grow_fast)(struct obstack *obstack_ptr, char c);
-  int (*obstack_alignment_mask)(struct obstack *obstack_ptr);
-  void *(*obstack_alloc)(struct obstack *obstack_ptr, int size);
-  void *(*obstack_base)(struct obstack *obstack_ptr);
-  void (*obstack_blank)(struct obstack *obstack_ptr, int size);
-  void (*obstack_blank_fast)(struct obstack *obstack_ptr, int size);
-  int (*obstack_chunk_size)(struct obstack *obstack_ptr);
-  void *(*obstack_copy)(struct obstack *obstack_ptr, void *address, int size);
-  void *(*obstack_copy0)(struct obstack *obstack_ptr, void *address, int size);
-  void *(*obstack_finish)(struct obstack *obstack_ptr);
-  void (*obstack_free)(struct obstack *obstack_ptr, void *object);
-  void (*obstack_grow)(struct obstack *obstack_ptr, void *data, int size);
-  void (*obstack_grow0)(struct obstack *obstack_ptr, void *data, int size);
-  int (*obstack_init)(struct obstack *obstack_ptr);
-  void (*obstack_int_grow)(struct obstack *obstack_ptr, int data);
-  void (*obstack_int_grow_fast)(struct obstack *obstack_ptr, int data);
-  void *(*obstack_next_free)(struct obstack *obstack_ptr);
-  int (*obstack_object_size)(struct obstack *obstack_ptr);
-  int (*obstack_printf)(struct obstack *obstack, const char *template, ...);
-  void (*obstack_ptr_grow)(struct obstack *obstack_ptr, void *data);
-  void (*obstack_ptr_grow_fast)(struct obstack *obstack_ptr, void *data);
-  int (*obstack_room)(struct obstack *obstack_ptr);
-  int (*obstack_vprintf)(struct obstack *obstack, const char *template,
-                         va_list ap);
-  size_t (*__builtin__offsetof)(void *type, void *member);
+  // int (*obstack_alignment_mask)(struct obstack *obstack_ptr);
+  // void *(*obstack_alloc)(struct obstack *obstack_ptr, int size);
+  // void *(*obstack_base)(struct obstack *obstack_ptr);
+  // void (*obstack_blank)(struct obstack *obstack_ptr, int size);
+  // void (*obstack_blank_fast)(struct obstack *obstack_ptr, int size);
+  // int (*obstack_chunk_size)(struct obstack *obstack_ptr);
+  // void *(*obstack_copy)(struct obstack *obstack_ptr, void *address, int
+  // size); void *(*obstack_copy0)(struct obstack *obstack_ptr, void *address,
+  // int size); void *(*obstack_finish)(struct obstack *obstack_ptr); void
+  // (*obstack_free)(struct obstack *obstack_ptr, void *object); void
+  // (*obstack_grow)(struct obstack *obstack_ptr, void *data, int size); void
+  // (*obstack_grow0)(struct obstack *obstack_ptr, void *data, int size); int
+  // (*obstack_init)(struct obstack *obstack_ptr); void
+  // (*obstack_int_grow)(struct obstack *obstack_ptr, int data); void
+  // (*obstack_int_grow_fast)(struct obstack *obstack_ptr, int data); void
+  // *(*obstack_next_free)(struct obstack *obstack_ptr); int
+  // (*obstack_object_size)(struct obstack *obstack_ptr); int
+  // (*obstack_printf)(struct obstack *obstack, const char *template, ...); void
+  // (*obstack_ptr_grow)(struct obstack *obstack_ptr, void *data); void
+  // (*obstack_ptr_grow_fast)(struct obstack *obstack_ptr, void *data); int
+  // (*obstack_room)(struct obstack *obstack_ptr); int (*obstack_vprintf)(struct
+  // obstack *obstack, const char *template,
+  //                        va_list ap);
   int (*on_exit)(void (*function)(int status, void *arg), void *arg);
   int (*open)(const char *filename, int flags, ...);
   FILE *(*open_memstream)(char **ptr, size_t *sizeloc);
@@ -1120,16 +1075,6 @@ static struct {
   double (*roundeven)(double x);
   int (*rpmatch)(const char *response);
   double (*rsqrt)(double x);
-  int (*S_ISBLK)(mode_t m);
-  int (*S_ISCHR)(mode_t m);
-  int (*S_ISDIR)(mode_t m);
-  int (*S_ISFIFO)(mode_t m);
-  int (*S_ISLNK)(mode_t m);
-  int (*S_ISREG)(mode_t m);
-  int (*S_ISSOCK)(mode_t m);
-  int (*S_TYPEISMQ)(struct stat *s);
-  int (*S_TYPEISSEM)(struct stat *s);
-  int (*S_TYPEISSHM)(struct stat *s);
   void *(*sbrk)(ptrdiff_t delta);
   double (*scalb)(double value, double exponent);
   double (*scalbln)(double x, long int n);
@@ -1246,15 +1191,12 @@ static struct {
   int (*siginterrupt)(int signum, int failflag);
   int (*sigismember)(const sigset_t *set, int signum);
   void (*siglongjmp)(sigjmp_buf state, int value);
-  int (*sigmask)(int signum);
   sighandler_t (*signal)(int signum, sighandler_t action);
-  int (*__builtin_signbit)(double x);
   double (*significand)(double x);
   int (*sigpause)(int mask);
   int (*sigpending)(sigset_t *set);
   int (*sigprocmask)(int how, const sigset_t *restrict set,
                      sigset_t *restrict oldset);
-  int (*sigsetjmp)(sigjmp_buf state, int savesigs);
   int (*sigsetmask)(int mask);
   int (*sigstack)(struct sigstack *stack, struct sigstack *oldstack);
   int (*sigsuspend)(const sigset_t *set);
@@ -1291,7 +1233,6 @@ static struct {
   unsigned int (*stdc_leading_zeros_uc)(unsigned char x);
   unsigned int (*stdc_trailing_ones_uc)(unsigned char x);
   unsigned int (*stdc_trailing_zeros_uc)(unsigned char x);
-  int (*stime)(const time_t *newtime);
   char *(*stpcpy)(char *restrict to, const char *restrict from);
   char *(*stpncpy)(char *restrict to, const char *restrict from, size_t size);
   int (*strcasecmp)(const char *s1, const char *s2);
@@ -1304,7 +1245,6 @@ static struct {
   char *(*strcpy)(char *restrict to, const char *restrict from);
   size_t (*strcspn)(const char *string, const char *stopset);
   char *(*strdup)(const char *s);
-  char *(*strdupa)(const char *s);
   char *(*strerror)(int errnum);
   char *(*strerror_l)(int errnum, locale_t locale);
   char *(*strerror_r)(int errnum, char *buf, size_t n);
@@ -1329,7 +1269,6 @@ static struct {
   int (*strncmp)(const char *s1, const char *s2, size_t size);
   char *(*strncpy)(char *restrict to, const char *restrict from, size_t size);
   char *(*strndup)(const char *s, size_t size);
-  char *(*strndupa)(const char *s, size_t size);
   size_t (*strnlen)(const char *s, size_t maxlen);
   char *(*strpbrk)(const char *string, const char *stopset);
   char *(*strptime)(const char *s, const char *fmt, struct tm *tp);
@@ -1362,7 +1301,6 @@ static struct {
   int (*strverscmp)(const char *s1, const char *s2);
   size_t (*strxfrm)(char *restrict to, const char *restrict from, size_t size);
   int (*stty)(int filedes, const struct sgttyb *attributes);
-  int (*SUN_LEN)(struct sockaddr_un *ptr);
   int (*swapcontext)(ucontext_t *restrict oucp, const ucontext_t *restrict ucp);
   int (*swprintf)(wchar_t *ws, size_t size, const wchar_t *template, ...);
   int (*swscanf)(const wchar_t *ws, const wchar_t *template, ...);
@@ -1453,10 +1391,6 @@ static struct {
   int (*utimes)(const char *filename, const struct timeval tvp[2]);
   int (*utmpname)(const char *file);
   int (*utmpxname)(const char *file);
-  void *(*__builtin__va_arg)(va_list ap, void *);
-  void (*__builtin_va_copy)(va_list dest, va_list src);
-  void (*__builtin_va_end)(va_list ap);
-  void (*__builtin_va_start)(va_list ap, void *);
   void *(*valloc)(size_t size);
   int (*vasprintf)(char **ptr, const char *template, va_list ap);
   int (*vdprintf)(int fd, const char *template, va_list ap);
@@ -1489,7 +1423,6 @@ static struct {
   pid_t (*waitpid)(pid_t pid, int *status_ptr, int options);
   void (*warn)(const char *format, ...);
   void (*warnx)(const char *format, ...);
-  int (*WCOREDUMP)(int status);
   wchar_t *(*wcpcpy)(wchar_t *restrict wto, const wchar_t *restrict wfrom);
   wchar_t *(*wcpncpy)(wchar_t *restrict wto, const wchar_t *restrict wfrom,
                       size_t size);
@@ -1551,10 +1484,6 @@ static struct {
   int (*wctomb)(char *string, wchar_t wchar);
   wctrans_t (*wctrans)(const char *property);
   wctype_t (*wctype)(const char *property);
-  int (*WEXITSTATUS)(int status);
-  int (*WIFEXITED)(int status);
-  int (*WIFSIGNALED)(int status);
-  int (*WIFSTOPPED)(int status);
   wchar_t *(*wmemchr)(const wchar_t *block, wchar_t wc, size_t size);
   int (*wmemcmp)(const wchar_t *a1, const wchar_t *a2, size_t size);
   wchar_t *(*wmemcpy)(wchar_t *restrict wto, const wchar_t *restrict wfrom,
@@ -1569,8 +1498,6 @@ static struct {
   ssize_t (*write)(int filedes, const void *buffer, size_t size);
   ssize_t (*writev)(int filedes, const struct iovec *vector, int count);
   int (*wscanf)(const wchar_t *template, ...);
-  int (*WSTOPSIG)(int status);
-  int (*WTERMSIG)(int status);
   double (*y0)(double x);
   double (*y1)(double x);
   double (*yn)(int n, double x);
@@ -1581,12 +1508,15 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   void *lm = dlopen("libm.so.6", RTLD_LAZY | RTLD_GLOBAL);
   libcFunctionTable.__builtin_assert = dlsym(libc, "__builtin_assert");
   libcFunctionTable.__assert_fail = dlsym(libc, "__assert_fail");
+  libcFunctionTable.memset = dlsym(libc, "memset");
+
+  libcFunctionTable.memset(&libcFunctionTable, 0, sizeof(libcFunctionTable));
 
 #define LOAD_FN(x)                                                             \
   libcFunctionTable.x = dlsym(libc, #x);                                       \
   assert(libcFunctionTable.x)
 
-#define LOAD_MATH_FN(x)                                                        \
+#define LOAD_FN_MATH(x)                                                        \
   libcFunctionTable.x = dlsym(lm, #x);                                         \
   assert(libcFunctionTable.x)
 
@@ -1612,9 +1542,9 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(abs);
   LOAD_FN(accept);
   LOAD_FN(access);
-  LOAD_MATH_FN(acos);
-  LOAD_MATH_FN(acosh);
-  LOAD_MATH_FN(acospi);
+  LOAD_FN_MATH(acos);
+  LOAD_FN_MATH(acosh);
+  LOAD_FN_MATH(acospi);
   LOAD_FN(addmntent);
   LOAD_FN(addseverity);
   LOAD_FN(adjtime);
@@ -1661,17 +1591,16 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(argz_stringify);
   LOAD_FN(asctime);
   LOAD_FN(asctime_r);
-  LOAD_FN(asin);
-  LOAD_FN(asinh);
-  LOAD_FN(asinpi);
+  LOAD_FN_MATH(asin);
+  LOAD_FN_MATH(asinh);
+  LOAD_FN_MATH(asinpi);
   LOAD_FN(asprintf);
-  LOAD_FN(assert_perror);
-  LOAD_FN(atan);
-  LOAD_FN(atan2);
-  LOAD_FN(atan2pi);
-  LOAD_FN(atanh);
-  LOAD_FN(atanpi);
-  LOAD_FN(atexit);
+  LOAD_FN_MATH(atan);
+  LOAD_FN_MATH(atan2);
+  LOAD_FN_MATH(atan2pi);
+  LOAD_FN_MATH(atanh);
+  LOAD_FN_MATH(atanpi);
+  // LOAD_FN(atexit);
   LOAD_FN(atof);
   LOAD_FN(atoi);
   LOAD_FN(atol);
@@ -1689,26 +1618,26 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(bsearch);
   LOAD_FN(btowc);
   LOAD_FN(bzero);
-  LOAD_FN(cabs);
-  LOAD_FN(cacos);
-  LOAD_FN(cacosh);
+  LOAD_FN_MATH(cabs);
+  LOAD_FN_MATH(cacos);
+  LOAD_FN_MATH(cacosh);
   LOAD_FN(call_once);
   LOAD_FN(calloc);
-  LOAD_FN(canonicalize);
+  LOAD_FN_MATH(canonicalize);
   LOAD_FN(canonicalize_file_name);
-  LOAD_FN(carg);
-  LOAD_FN(casin);
-  LOAD_FN(casinh);
-  LOAD_FN(catan);
-  LOAD_FN(catanh);
+  LOAD_FN_MATH(carg);
+  LOAD_FN_MATH(casin);
+  LOAD_FN_MATH(casinh);
+  LOAD_FN_MATH(catan);
+  LOAD_FN_MATH(catanh);
   LOAD_FN(catclose);
   LOAD_FN(catgets);
   LOAD_FN(catopen);
-  LOAD_FN(cbrt);
-  LOAD_FN(ccos);
-  LOAD_FN(ccosh);
-  LOAD_FN(ceil);
-  LOAD_FN(cexp);
+  LOAD_FN_MATH(cbrt);
+  LOAD_FN_MATH(ccos);
+  LOAD_FN_MATH(ccosh);
+  LOAD_FN_MATH(ceil);
+  LOAD_FN_MATH(cexp);
   LOAD_FN(cfgetibaud);
   LOAD_FN(cfgetispeed);
   LOAD_FN(cfgetobaud);
@@ -1723,7 +1652,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(chdir);
   LOAD_FN(chmod);
   LOAD_FN(chown);
-  LOAD_FN(cimag);
+  LOAD_FN_MATH(cimag);
   LOAD_FN(clearenv);
   LOAD_FN(clearerr);
   LOAD_FN(clearerr_unlocked);
@@ -1732,8 +1661,8 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(clock_gettime);
   LOAD_FN(clock_nanosleep);
   LOAD_FN(clock_settime);
-  LOAD_FN(clog);
-  LOAD_FN(clog10);
+  LOAD_FN_MATH(clog);
+  LOAD_FN_MATH(clog10);
   LOAD_FN(close);
   LOAD_FN(close_range);
   LOAD_FN(closedir);
@@ -1745,46 +1674,25 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(cnd_signal);
   LOAD_FN(cnd_timedwait);
   LOAD_FN(cnd_wait);
-  LOAD_FN(compoundn);
+  LOAD_FN_MATH(compoundn);
   LOAD_FN(confstr);
-  LOAD_FN(conj);
+  LOAD_FN_MATH(conj);
   LOAD_FN(connect);
   LOAD_FN(copy_file_range);
   LOAD_FN(copysign);
-  LOAD_FN(cos);
-  LOAD_FN(cosh);
-  LOAD_FN(cospi);
-  LOAD_FN(cpow);
-  LOAD_FN(cproj);
-  LOAD_FN(CPU_ALLOC);
-  LOAD_FN(CPU_ALLOC_SIZE);
-  LOAD_FN(CPU_AND);
-  LOAD_FN(CPU_AND_S);
-  LOAD_FN(CPU_CLR);
-  LOAD_FN(CPU_CLR_S);
-  LOAD_FN(CPU_COUNT);
-  LOAD_FN(CPU_COUNT_S);
-  LOAD_FN(CPU_EQUAL);
-  LOAD_FN(CPU_EQUAL_S);
-  LOAD_FN(CPU_FREE);
-  LOAD_FN(CPU_ISSET);
-  LOAD_FN(CPU_ISSET_S);
-  LOAD_FN(CPU_OR);
-  LOAD_FN(CPU_OR_S);
-  LOAD_FN(CPU_SET);
-  LOAD_FN(CPU_SET_S);
-  LOAD_FN(CPU_XOR);
-  LOAD_FN(CPU_XOR_S);
-  LOAD_FN(CPU_ZERO);
-  LOAD_FN(CPU_ZERO_S);
-  LOAD_FN(creal);
+  LOAD_FN_MATH(cos);
+  LOAD_FN_MATH(cosh);
+  LOAD_FN_MATH(cospi);
+  LOAD_FN_MATH(cpow);
+  LOAD_FN_MATH(cproj);
+  LOAD_FN_MATH(creal);
   LOAD_FN(creat);
   LOAD_FN(creat64);
-  LOAD_FN(csin);
-  LOAD_FN(csinh);
-  LOAD_FN(csqrt);
-  LOAD_FN(ctan);
-  LOAD_FN(ctanh);
+  LOAD_FN_MATH(csin);
+  LOAD_FN_MATH(csinh);
+  LOAD_FN_MATH(csqrt);
+  LOAD_FN_MATH(ctan);
+  LOAD_FN_MATH(ctanh);
   LOAD_FN(ctermid);
   LOAD_FN(ctime);
   LOAD_FN(ctime_r);
@@ -1801,8 +1709,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(dprintf);
   LOAD_FN(drand48);
   LOAD_FN(drand48_r);
-  LOAD_FN(drem);
-  LOAD_FN(DTTOIF);
+  LOAD_FN_MATH(drem);
   LOAD_FN(dup);
   LOAD_FN(dup2);
   LOAD_FN(dup3);
@@ -1829,8 +1736,8 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(epoll_wait);
   LOAD_FN(erand48);
   LOAD_FN(erand48_r);
-  LOAD_FN(erf);
-  LOAD_FN(erfc);
+  LOAD_FN_MATH(erf);
+  LOAD_FN_MATH(erfc);
   LOAD_FN(err);
   LOAD_FN(error);
   LOAD_FN(error_at_line);
@@ -1842,16 +1749,16 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(execve);
   LOAD_FN(execvp);
   LOAD_FN(exit);
-  LOAD_FN(exp);
-  LOAD_FN(exp10);
-  LOAD_FN(exp10m1);
-  LOAD_FN(exp2);
-  LOAD_FN(exp2m1);
+  LOAD_FN_MATH(exp);
+  LOAD_FN_MATH(exp10);
+  LOAD_FN_MATH(exp10m1);
+  LOAD_FN_MATH(exp2);
+  LOAD_FN_MATH(exp2m1);
   LOAD_FN(explicit_bzero);
-  LOAD_FN(expm1);
-  LOAD_FN(fabs);
+  LOAD_FN_MATH(expm1);
+  LOAD_FN_MATH(fabs);
   LOAD_FN(faccessat);
-  LOAD_FN(fadd);
+  LOAD_FN_MATH(fadd);
   LOAD_FN(fchdir);
   LOAD_FN(fchmod);
   LOAD_FN(fchown);
@@ -1860,41 +1767,37 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(fcntl);
   LOAD_FN(fcvt);
   LOAD_FN(fcvt_r);
-  LOAD_FN(FD_CLR);
-  LOAD_FN(FD_ISSET);
-  LOAD_FN(FD_SET);
-  LOAD_FN(FD_ZERO);
   LOAD_FN(fdatasync);
-  LOAD_FN(fdim);
-  LOAD_FN(fdiv);
+  LOAD_FN_MATH(fdim);
+  LOAD_FN_MATH(fdiv);
   LOAD_FN(fdopen);
   LOAD_FN(fdopendir);
-  LOAD_FN(feclearexcept);
-  LOAD_FN(fedisableexcept);
-  LOAD_FN(feenableexcept);
-  LOAD_FN(fegetenv);
-  LOAD_FN(fegetexcept);
-  LOAD_FN(fegetexceptflag);
-  LOAD_FN(fegetmode);
-  LOAD_FN(fegetround);
-  LOAD_FN(feholdexcept);
-  LOAD_FN(feof);
-  LOAD_FN(feof_unlocked);
-  LOAD_FN(feraiseexcept);
+  LOAD_FN_MATH(feclearexcept);
+  LOAD_FN_MATH(fedisableexcept);
+  LOAD_FN_MATH(feenableexcept);
+  LOAD_FN_MATH(fegetenv);
+  LOAD_FN_MATH(fegetexcept);
+  LOAD_FN_MATH(fegetexceptflag);
+  LOAD_FN_MATH(fegetmode);
+  LOAD_FN_MATH(fegetround);
+  LOAD_FN_MATH(feholdexcept);
+  LOAD_FN_MATH(feof);
+  LOAD_FN_MATH(feof_unlocked);
+  LOAD_FN_MATH(feraiseexcept);
   LOAD_FN(ferror);
   LOAD_FN(ferror_unlocked);
-  LOAD_FN(fesetenv);
-  LOAD_FN(fesetexcept);
-  LOAD_FN(fesetexceptflag);
-  LOAD_FN(fesetmode);
-  LOAD_FN(fesetround);
-  LOAD_FN(fetestexcept);
-  LOAD_FN(fetestexceptflag);
-  LOAD_FN(feupdateenv);
+  LOAD_FN_MATH(fesetenv);
+  LOAD_FN_MATH(fesetexcept);
+  LOAD_FN_MATH(fesetexceptflag);
+  LOAD_FN_MATH(fesetmode);
+  LOAD_FN_MATH(fesetround);
+  LOAD_FN_MATH(fetestexcept);
+  LOAD_FN_MATH(fetestexceptflag);
+  LOAD_FN_MATH(feupdateenv);
   LOAD_FN(fexecve);
   LOAD_FN(fflush);
   LOAD_FN(fflush_unlocked);
-  LOAD_FN(ffma);
+  LOAD_FN_MATH(ffma);
   LOAD_FN(fgetc);
   LOAD_FN(fgetc_unlocked);
   LOAD_FN(fgetgrent);
@@ -1913,24 +1816,24 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(fileno_unlocked);
   LOAD_FN(finite);
   LOAD_FN(flockfile);
-  LOAD_FN(floor);
-  LOAD_FN(fma);
-  LOAD_FN(fmax);
-  LOAD_FN(fmaximum);
-  LOAD_FN(fmaximum_mag);
-  LOAD_FN(fmaximum_mag_num);
-  LOAD_FN(fmaximum_num);
-  LOAD_FN(fmaxmag);
+  LOAD_FN_MATH(floor);
+  LOAD_FN_MATH(fma);
+  LOAD_FN_MATH(fmax);
+  LOAD_FN_MATH(fmaximum);
+  LOAD_FN_MATH(fmaximum_mag);
+  LOAD_FN_MATH(fmaximum_mag_num);
+  LOAD_FN_MATH(fmaximum_num);
+  LOAD_FN_MATH(fmaxmag);
   LOAD_FN(fmemopen);
-  LOAD_FN(fmin);
-  LOAD_FN(fminimum);
-  LOAD_FN(fminimum_mag);
-  LOAD_FN(fminimum_mag_num);
-  LOAD_FN(fminimum_num);
-  LOAD_FN(fminmag);
-  LOAD_FN(fmod);
+  LOAD_FN_MATH(fmin);
+  LOAD_FN_MATH(fminimum);
+  LOAD_FN_MATH(fminimum_mag);
+  LOAD_FN_MATH(fminimum_mag_num);
+  LOAD_FN_MATH(fminimum_num);
+  LOAD_FN_MATH(fminmag);
+  LOAD_FN_MATH(fmod);
   LOAD_FN(fmtmsg);
-  LOAD_FN(fmul);
+  LOAD_FN_MATH(fmul);
   LOAD_FN(fnmatch);
   LOAD_FN(fopen);
   LOAD_FN(fopen64);
@@ -1938,7 +1841,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(fork);
   LOAD_FN(forkpty);
   LOAD_FN(fpathconf);
-  LOAD_FN(__builtin_fpclassify);
+  // LOAD_FN(__builtin_fpclassify);
   LOAD_FN(fprintf);
   LOAD_FN(fputc);
   LOAD_FN(fputc_unlocked);
@@ -1954,19 +1857,19 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(freopen);
   LOAD_FN(freopen64);
   LOAD_FN(frexp);
-  LOAD_FN(fromfp);
+  LOAD_FN_MATH(fromfp);
   LOAD_FN(fscanf);
   LOAD_FN(fseek);
   LOAD_FN(fseeko);
   LOAD_FN(fseeko64);
   LOAD_FN(fsetpos);
   LOAD_FN(fsetpos64);
-  LOAD_FN(fsqrt);
+  LOAD_FN_MATH(fsqrt);
   LOAD_FN(fstat);
   LOAD_FN(fstat64);
   LOAD_FN(fstatat);
   LOAD_FN(fstatat64);
-  LOAD_FN(fsub);
+  LOAD_FN_MATH(fsub);
   LOAD_FN(fsync);
   LOAD_FN(ftell);
   LOAD_FN(ftello);
@@ -1984,7 +1887,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(fwrite);
   LOAD_FN(fwrite_unlocked);
   LOAD_FN(fwscanf);
-  LOAD_FN(gamma);
+  LOAD_FN_MATH(gamma);
   LOAD_FN(gcvt);
   LOAD_FN(get_avphys_pages);
   LOAD_FN(get_current_dir_name);
@@ -2003,7 +1906,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(getdate_r);
   LOAD_FN(getdelim);
   LOAD_FN(getdents64);
-  LOAD_FN(getdomainnname);
+  LOAD_FN(getdomainname);
   LOAD_FN(getegid);
   LOAD_FN(getentropy);
   LOAD_FN(getenv);
@@ -2045,7 +1948,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(getopt_long_only);
   LOAD_FN(getpagesize);
   LOAD_FN(getpass);
-  LOAD_FN(getpayload);
+  LOAD_FN_MATH(getpayload);
   LOAD_FN(getpeername);
   LOAD_FN(getpgid);
   LOAD_FN(getpgrp);
@@ -2078,7 +1981,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(gettid);
   LOAD_FN(gettimeofday);
   LOAD_FN(getuid);
-  LOAD_FN(getumask);
   LOAD_FN(getutent);
   LOAD_FN(getutent_r);
   LOAD_FN(getutid);
@@ -2114,7 +2016,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(hsearch_r);
   LOAD_FN(htonl);
   LOAD_FN(htons);
-  LOAD_FN(hypot);
+  LOAD_FN_MATH(hypot);
   LOAD_FN(iconv);
   LOAD_FN(iconv_close);
   LOAD_FN(iconv_open);
@@ -2122,8 +2024,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(if_indextoname);
   LOAD_FN(if_nameindex);
   LOAD_FN(if_nametoindex);
-  LOAD_FN(IFTODT);
-  LOAD_FN(ilogb);
+  LOAD_FN_MATH(ilogb);
   LOAD_FN(imaxdiv);
   LOAD_FN(index);
   LOAD_FN(inet_addr);
@@ -2147,21 +2048,11 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(isblank);
   LOAD_FN(iscntrl);
   LOAD_FN(isdigit);
-  LOAD_FN(__builtin_isfinite);
   LOAD_FN(isgraph);
-  LOAD_FN(__builtin_isgreater);
-  LOAD_FN(__builtin_isgreaterequal);
-  LOAD_FN(__builtin_isinf_sign);
-  LOAD_FN(__builtin_isless);
-  LOAD_FN(__builtin_islessequal);
-  LOAD_FN(__builtin_islessgreater);
   LOAD_FN(islower);
-  LOAD_FN(__builtin_isnan);
-  LOAD_FN(__builtin_isnormal);
   LOAD_FN(isprint);
   LOAD_FN(ispunct);
   LOAD_FN(isspace);
-  LOAD_FN(__builtin_isunordered);
   LOAD_FN(isupper);
   LOAD_FN(iswalnum);
   LOAD_FN(iswalpha);
@@ -2177,11 +2068,11 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(iswupper);
   LOAD_FN(iswxdigit);
   LOAD_FN(isxdigit);
-  LOAD_FN(j0);
-  LOAD_FN(j1);
-  LOAD_FN(jn);
-  LOAD_FN(jrand48);
-  LOAD_FN(jrand48_r);
+  LOAD_FN_MATH(j0);
+  LOAD_FN_MATH(j1);
+  LOAD_FN_MATH(jn);
+  LOAD_FN_MATH(jrand48);
+  LOAD_FN_MATH(jrand48_r);
   LOAD_FN(kill);
   LOAD_FN(killpg);
   LOAD_FN(l64a);
@@ -2190,26 +2081,26 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(ldexp);
   LOAD_FN(ldiv);
   LOAD_FN(lfind);
-  LOAD_FN(lgamma);
-  LOAD_FN(lgamma_r);
+  LOAD_FN_MATH(lgamma);
+  LOAD_FN_MATH(lgamma_r);
   LOAD_FN(link);
   LOAD_FN(linkat);
   LOAD_FN(lio_listio);
   LOAD_FN(lio_listio64);
   LOAD_FN(listen);
   LOAD_FN(lldiv);
-  LOAD_FN(llrint);
-  LOAD_FN(llround);
+  LOAD_FN_MATH(llrint);
+  LOAD_FN_MATH(llround);
   LOAD_FN(localeconv);
   LOAD_FN(localtime);
   LOAD_FN(localtime_r);
-  LOAD_FN(log);
-  LOAD_FN(log10);
-  LOAD_FN(log10p1);
-  LOAD_FN(log1p);
-  LOAD_FN(log2);
-  LOAD_FN(log2p1);
-  LOAD_FN(logb);
+  LOAD_FN_MATH(log);
+  LOAD_FN_MATH(log10);
+  LOAD_FN_MATH(log10p1);
+  LOAD_FN_MATH(log1p);
+  LOAD_FN_MATH(log2);
+  LOAD_FN_MATH(log2p1);
+  LOAD_FN_MATH(logb);
   LOAD_FN(login);
   LOAD_FN(login_tty);
   LOAD_FN(logout);
@@ -2217,8 +2108,8 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(longjmp);
   LOAD_FN(lrand48);
   LOAD_FN(lrand48_r);
-  LOAD_FN(lrint);
-  LOAD_FN(lround);
+  LOAD_FN_MATH(lrint);
+  LOAD_FN_MATH(lround);
   LOAD_FN(lsearch);
   LOAD_FN(lseek);
   LOAD_FN(lseek64);
@@ -2283,13 +2174,13 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(munlockall);
   LOAD_FN(munmap);
   LOAD_FN(muntrace);
-  LOAD_FN(nan);
+  LOAD_FN_MATH(nan);
   LOAD_FN(nanosleep);
-  LOAD_FN(nearbyint);
-  LOAD_FN(nextafter);
-  LOAD_FN(nextdown);
-  LOAD_FN(nexttoward);
-  LOAD_FN(nextup);
+  LOAD_FN_MATH(nearbyint);
+  LOAD_FN_MATH(nextafter);
+  LOAD_FN_MATH(nextdown);
+  LOAD_FN_MATH(nexttoward);
+  LOAD_FN_MATH(nextup);
   LOAD_FN(nftw);
   LOAD_FN(nftw64);
   LOAD_FN(ngettext);
@@ -2301,31 +2192,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(ntohs);
   LOAD_FN(ntp_adjtime);
   LOAD_FN(ntp_gettime);
-  LOAD_FN(obstack_1grow);
-  LOAD_FN(obstack_1grow_fast);
-  LOAD_FN(obstack_alignment_mask);
-  LOAD_FN(obstack_alloc);
-  LOAD_FN(obstack_base);
-  LOAD_FN(obstack_blank);
-  LOAD_FN(obstack_blank_fast);
-  LOAD_FN(obstack_chunk_size);
-  LOAD_FN(obstack_copy);
-  LOAD_FN(obstack_copy0);
-  LOAD_FN(obstack_finish);
-  LOAD_FN(obstack_free);
-  LOAD_FN(obstack_grow);
-  LOAD_FN(obstack_grow0);
-  LOAD_FN(obstack_init);
-  LOAD_FN(obstack_int_grow);
-  LOAD_FN(obstack_int_grow_fast);
-  LOAD_FN(obstack_next_free);
-  LOAD_FN(obstack_object_size);
-  LOAD_FN(obstack_printf);
-  LOAD_FN(obstack_ptr_grow);
-  LOAD_FN(obstack_ptr_grow_fast);
-  LOAD_FN(obstack_room);
-  LOAD_FN(obstack_vprintf);
-  LOAD_FN(__builtin__offsetof);
   LOAD_FN(on_exit);
   LOAD_FN(open);
   LOAD_FN(open_memstream);
@@ -2353,9 +2219,9 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(posix_fallocate64);
   LOAD_FN(posix_memalign);
   LOAD_FN(posix_openpt);
-  LOAD_FN(pow);
-  LOAD_FN(pown);
-  LOAD_FN(powr);
+  LOAD_FN_MATH(pow);
+  LOAD_FN_MATH(pown);
+  LOAD_FN_MATH(powr);
   LOAD_FN(pread);
   LOAD_FN(pread64);
   LOAD_FN(preadv);
@@ -2471,33 +2337,23 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(regexec);
   LOAD_FN(regfree);
   // LOAD_FN(register_printf_function);
-  LOAD_FN(remainder);
+  LOAD_FN_MATH(remainder);
   LOAD_FN(remove);
   LOAD_FN(rename);
   LOAD_FN(renameat);
   LOAD_FN(rewind);
   LOAD_FN(rewinddir);
   LOAD_FN(rindex);
-  LOAD_FN(rint);
+  LOAD_FN_MATH(rint);
   LOAD_FN(rmdir);
-  LOAD_FN(rootn);
-  LOAD_FN(round);
-  LOAD_FN(roundeven);
+  LOAD_FN_MATH(rootn);
+  LOAD_FN_MATH(round);
+  LOAD_FN_MATH(roundeven);
   LOAD_FN(rpmatch);
-  LOAD_FN(rsqrt);
-  LOAD_FN(S_ISBLK);
-  LOAD_FN(S_ISCHR);
-  LOAD_FN(S_ISDIR);
-  LOAD_FN(S_ISFIFO);
-  LOAD_FN(S_ISLNK);
-  LOAD_FN(S_ISREG);
-  LOAD_FN(S_ISSOCK);
-  LOAD_FN(S_TYPEISMQ);
-  LOAD_FN(S_TYPEISSEM);
-  LOAD_FN(S_TYPEISSHM);
+  LOAD_FN_MATH(rsqrt);
   LOAD_FN(sbrk);
-  LOAD_FN(scalb);
-  LOAD_FN(scalbln);
+  LOAD_FN_MATH(scalb);
+  LOAD_FN_MATH(scalbln);
   LOAD_FN(scalbn);
   LOAD_FN(scandir);
   LOAD_FN(scandir64);
@@ -2560,8 +2416,8 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(setmntent);
   LOAD_FN(setnetent);
   LOAD_FN(setnetgrent);
-  LOAD_FN(setpayload);
-  LOAD_FN(setpayloadsig);
+  LOAD_FN_MATH(setpayload);
+  LOAD_FN_MATH(setpayloadsig);
   LOAD_FN(setpgid);
   LOAD_FN(setpgrp);
   LOAD_FN(setpriority);
@@ -2596,27 +2452,24 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(siginterrupt);
   LOAD_FN(sigismember);
   LOAD_FN(siglongjmp);
-  LOAD_FN(sigmask);
   LOAD_FN(signal);
-  LOAD_FN(__builtin_signbit);
-  LOAD_FN(significand);
+  LOAD_FN_MATH(significand);
   LOAD_FN(sigpause);
   LOAD_FN(sigpending);
   LOAD_FN(sigprocmask);
-  LOAD_FN(sigsetjmp);
   LOAD_FN(sigsetmask);
   LOAD_FN(sigstack);
   LOAD_FN(sigsuspend);
-  LOAD_FN(sin);
-  LOAD_FN(sincos);
-  LOAD_FN(sinh);
-  LOAD_FN(sinpi);
+  LOAD_FN_MATH(sin);
+  LOAD_FN_MATH(sincos);
+  LOAD_FN_MATH(sinh);
+  LOAD_FN_MATH(sinpi);
   LOAD_FN(sleep);
   LOAD_FN(snprintf);
   LOAD_FN(socket);
   LOAD_FN(socketpair);
   LOAD_FN(sprintf);
-  LOAD_FN(sqrt);
+  LOAD_FN_MATH(sqrt);
   LOAD_FN(srand);
   LOAD_FN(srand48);
   LOAD_FN(srand48_r);
@@ -2640,7 +2493,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(stdc_leading_zeros_uc);
   LOAD_FN(stdc_trailing_ones_uc);
   LOAD_FN(stdc_trailing_zeros_uc);
-  LOAD_FN(stime);
   LOAD_FN(stpcpy);
   LOAD_FN(stpncpy);
   LOAD_FN(strcasecmp);
@@ -2653,7 +2505,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(strcpy);
   LOAD_FN(strcspn);
   LOAD_FN(strdup);
-  LOAD_FN(strdupa);
   LOAD_FN(strerror);
   LOAD_FN(strerror_l);
   LOAD_FN(strerror_r);
@@ -2673,7 +2524,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(strncmp);
   LOAD_FN(strncpy);
   LOAD_FN(strndup);
-  LOAD_FN(strndupa);
   LOAD_FN(strnlen);
   LOAD_FN(strpbrk);
   LOAD_FN(strptime);
@@ -2698,7 +2548,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(strverscmp);
   LOAD_FN(strxfrm);
   LOAD_FN(stty);
-  LOAD_FN(SUN_LEN);
   LOAD_FN(swapcontext);
   LOAD_FN(swprintf);
   LOAD_FN(swscanf);
@@ -2709,9 +2558,9 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(syslog);
   LOAD_FN(system);
   LOAD_FN(sysv_signal);
-  LOAD_FN(tan);
-  LOAD_FN(tanh);
-  LOAD_FN(tanpi);
+  LOAD_FN_MATH(tan);
+  LOAD_FN_MATH(tanh);
+  LOAD_FN_MATH(tanpi);
   LOAD_FN(tcdrain);
   LOAD_FN(tcflow);
   LOAD_FN(tcflush);
@@ -2727,7 +2576,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(tempnam);
   LOAD_FN(textdomain);
   LOAD_FN(tfind);
-  LOAD_FN(tgamma);
+  LOAD_FN_MATH(tgamma);
   LOAD_FN(tgkill);
   LOAD_FN(thrd_create);
   LOAD_FN(thrd_current);
@@ -2749,13 +2598,13 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(tmpnam_r);
   LOAD_FN(toascii);
   LOAD_FN(tolower);
-  LOAD_FN(totalorder);
-  LOAD_FN(totalordermag);
+  LOAD_FN_MATH(totalorder);
+  LOAD_FN_MATH(totalordermag);
   LOAD_FN(toupper);
   LOAD_FN(towctrans);
   LOAD_FN(towlower);
   LOAD_FN(towupper);
-  LOAD_FN(trunc);
+  LOAD_FN_MATH(trunc);
   LOAD_FN(truncate);
   LOAD_FN(truncate64);
   LOAD_FN(tsearch);
@@ -2785,10 +2634,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(utimes);
   LOAD_FN(utmpname);
   LOAD_FN(utmpxname);
-  LOAD_FN(__builtin__va_arg);
-  LOAD_FN(__builtin_va_copy);
-  LOAD_FN(__builtin_va_end);
-  LOAD_FN(__builtin_va_start);
   LOAD_FN(valloc);
   LOAD_FN(vasprintf);
   LOAD_FN(vdprintf);
@@ -2820,7 +2665,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(waitpid);
   LOAD_FN(warn);
   LOAD_FN(warnx);
-  LOAD_FN(WCOREDUMP);
   LOAD_FN(wcpcpy);
   LOAD_FN(wcpncpy);
   LOAD_FN(wcrtomb);
@@ -2865,10 +2709,6 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(wctomb);
   LOAD_FN(wctrans);
   LOAD_FN(wctype);
-  LOAD_FN(WEXITSTATUS);
-  LOAD_FN(WIFEXITED);
-  LOAD_FN(WIFSIGNALED);
-  LOAD_FN(WIFSTOPPED);
   LOAD_FN(wmemchr);
   LOAD_FN(wmemcmp);
   LOAD_FN(wmemcpy);
@@ -2881,15 +2721,15 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN(write);
   LOAD_FN(writev);
   LOAD_FN(wscanf);
-  LOAD_FN(WSTOPSIG);
-  LOAD_FN(WTERMSIG);
-  LOAD_FN(y0);
-  LOAD_FN(y1);
-  LOAD_FN(yn);
+  LOAD_FN_MATH(y0);
+  LOAD_FN_MATH(y1);
+  LOAD_FN_MATH(yn);
 }
 
 void __builtin_assert(int a) { libcFunctionTable.__builtin_assert(a); }
 void __assert_fail(const char *assertion, const char *file, unsigned int line,
                    const char *function) {
   libcFunctionTable.__assert_fail(assertion, file, line, function);
+  while (1) {
+  }
 }
