@@ -57,8 +57,7 @@ pub fn syscall6(
           [arg4] "{r10}" (arg4),
           [arg5] "{r8}" (arg5),
           [arg6] "{r9}" (arg6),
-        : .{ .rcx = true, .r11 = true, .memory = true }
-    );
+        : .{ .rcx = true, .r11 = true, .memory = true });
 }
 
 inline fn syscall0(number: usize) isize {
@@ -88,7 +87,7 @@ fn checkError(rc: isize) isize {
 
 // Syscall wrappers
 
-pub fn exit(status: c_int) noreturn {
+pub export fn exit(status: c_int) noreturn {
     _ = syscall1(SYS_exit, @bitCast(@as(isize, status)));
     unreachable;
 }

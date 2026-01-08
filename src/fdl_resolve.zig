@@ -24,7 +24,7 @@ pub const Context = struct {
         return self.dlopen_ptr(path, flags);
     }
 
-    pub fn dlsym(self: Context, handle: ?*anyopaque, name: [*:0]const u8, comptime T: type) ?T {
+    pub fn dlsym(self: Context, handle: ?*anyopaque, name: [*:0]const u8, comptime T: type) T {
         const ptr = self.dlsym_ptr(handle, name) orelse return null;
         return @ptrCast(ptr);
     }
@@ -128,11 +128,6 @@ fn findLibcBase() ?usize {
             if (entry.path != null and entry.offset == 0) {
                 cached_libc_base = entry.start;
 
-                printf.fdprintf(2, "libc base 0x%lx @ %s\n", &[_]printf.FormatArg{
-                    printf.FormatArg.fromUint(entry.start),
-                    printf.FormatArg.fromSlice(entry.path.?),
-                });
-
                 return entry.start;
             }
         }
@@ -163,13 +158,6 @@ fn modInit(m: *Module, base: usize) ModInitError!void {
     m.ph = @ptrFromInt(base + eh.e_phoff);
     const ph = m.ph.?;
 
-    printf.fdprintf(2, "mod_init: base=0x%lx phoff=0x%lx phnum=%u entsz=%u\n", &[_]printf.FormatArg{
-        printf.FormatArg.fromUint(base),
-        printf.FormatArg.fromUint(eh.e_phoff),
-        printf.FormatArg.fromUint(eh.e_phnum),
-        printf.FormatArg.fromUint(eh.e_phentsize),
-    });
-
     // Find load range and PT_DYNAMIC in single pass
     var lo: usize = std.math.maxInt(usize);
     var hi: usize = 0;
@@ -192,23 +180,14 @@ fn modInit(m: *Module, base: usize) ModInitError!void {
 
     // Validate PT_DYNAMIC
     const da = dyn_addr orelse {
-        printf.fdprintf(2, "mod_init: no PT_DYNAMIC\n", &[_]printf.FormatArg{});
         return error.NoDynamic;
     };
 
     if (da < lo or da + @sizeOf(elf.Elf64_Dyn) > hi) {
-        printf.fdprintf(2, "mod_init: PT_DYNAMIC out of range: 0x%lx [0x%lx..0x%lx)\n", &[_]printf.FormatArg{
-            printf.FormatArg.fromUint(da),
-            printf.FormatArg.fromUint(lo),
-            printf.FormatArg.fromUint(hi),
-        });
         return error.DynamicOutOfRange;
     }
 
     m.dyn = @ptrFromInt(da);
-    printf.fdprintf(2, "mod_init: PT_DYNAMIC @ 0x%lx\n", &[_]printf.FormatArg{
-        printf.FormatArg.fromUint(da),
-    });
 
     // Parse dynamic section
     const dyn = m.dyn.?;
@@ -242,13 +221,6 @@ fn modInit(m: *Module, base: usize) ModInitError!void {
             else => {},
         }
     }
-
-    printf.fdprintf(2, "mod_init: dynsym=%p dynstr=%p gnu_hash=%p sysv_hash=%p\n", &[_]printf.FormatArg{
-        printf.FormatArg.fromPtr(m.dynsym),
-        printf.FormatArg.fromPtr(m.dynstr),
-        printf.FormatArg.fromPtr(m.gnu_buckets),
-        printf.FormatArg.fromPtr(m.buckets),
-    });
 
     if (m.dynsym == null or m.dynstr == null) {
         return error.MissingSymbols;

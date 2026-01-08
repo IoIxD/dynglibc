@@ -10,45 +10,7 @@ pub fn build(b: *std.Build) void {
         .abi = .none,
     });
 
-    // Main demo
-    const exe = addDemo(b, target, optimize, "src/main.zig", "foreign_dlopen_demo");
-    b.installArtifact(exe);
-
-    const run_cmd = b.addRunArtifact(exe);
-    run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| run_cmd.addArgs(args);
-
-    const run_step = b.step("run", "Run the demo");
-    run_step.dependOn(&run_cmd.step);
-
-    // Simple demo (minimal example)
-    const simple_exe = addDemo(b, target, optimize, "src/simple_main.zig", "simple_demo");
-    b.installArtifact(simple_exe);
-
-    const simple_run = b.addRunArtifact(simple_exe);
-    simple_run.step.dependOn(b.getInstallStep());
-
-    const simple_step = b.step("simple", "Run the minimal demo");
-    simple_step.dependOn(&simple_run.step);
-
-    // Example shared library (C)
-    const example_lib = b.addLibrary(.{
-        .name = "example",
-        .linkage = .dynamic,
-        .root_module = b.createModule(.{
-            .target = b.resolveTargetQuery(.{
-                .cpu_arch = .x86_64,
-                .os_tag = .linux,
-                .abi = .gnu,
-            }),
-            .optimize = optimize,
-            .link_libc = true,
-        }),
-    });
-    example_lib.addCSourceFile(.{ .file = b.path("src/example.c") });
-    b.installArtifact(example_lib);
-
-    simple_step.dependOn(&example_lib.step);
+    b.installArtifact(addDemo(b, target, optimize, "src/launcher.zig", "simple_demo"));
 }
 
 fn addDemo(
@@ -74,6 +36,11 @@ fn addDemo(
         .root_module = root_module,
         .use_llvm = true,
     });
+
+    exe.addCSourceFile(.{ .file = b.path("src/stub.c") });
+
+    exe.addCSourceFile(.{ .file = b.path("example/example.c") });
+    exe.addIncludePath(.{ .cwd_relative = "/usr/include" });
 
     exe.entry = .{ .symbol_name = "z_start" };
     exe.pie = true;

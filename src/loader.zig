@@ -127,8 +127,6 @@ pub fn Loader(
 
         // Called after dynamic loader initializes
         pub export fn fdl_entry_impl() callconv(.c) void {
-            printf.puts("Loader is in memory... Start parsing logic");
-
             var ctx = fdl_resolve.init(interp_base) catch {
                 syscalls.exit(1);
             };
@@ -279,9 +277,6 @@ pub fn Loader(
                     @memmove(@as([*]u8, @ptrCast(&static_interp)), interp_buf[0..(interp_size + 1)]);
 
                     elf_interp = @ptrCast(&static_interp);
-                    printf.printf("elf_interp: %s\n", &[_]printf.FormatArg{
-                        printf.FormatArg.fromStr(elf_interp.?),
-                    });
                     current_file = elf_interp.?;
                 }
 
@@ -325,17 +320,12 @@ pub fn Loader(
                 interp_base = base[Z_INTERP];
             }
 
-            printf.printf("Calling trampo...file: %s, interp: %s\n", &[_]printf.FormatArg{
-                printf.FormatArg.fromStr(if (current_file[0] != 0) current_file else "(null)"),
-                printf.FormatArg.fromStr(if (elf_interp) |ei| ei else "(null)"),
-            });
-
             // Jump to dynamic loader (or program entry if static)
             const target_entry = if (elf_interp != null) entry[Z_INTERP] else entry[Z_PROG];
             trampo(target_entry, sp);
 
             // Should not reach
-            syscalls.exit(0);
+            syscalls.exit(1);
         }
 
         // z_start: Program entry point
