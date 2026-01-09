@@ -10,7 +10,9 @@ pub fn build(b: *std.Build) void {
         .abi = .none,
     });
 
-    b.installArtifact(addDemo(b, target, optimize, "src/launcher.zig", "simple_demo"));
+    b.installArtifact(addDemo(b, target, optimize, "example/example.c", "example"));
+
+    b.installArtifact(addDemo(b, target, optimize, "example/opengl.c", "opengl"));
 }
 
 fn addDemo(
@@ -21,7 +23,7 @@ fn addDemo(
     name: []const u8,
 ) *std.Build.Step.Compile {
     const root_module = b.createModule(.{
-        .root_source_file = b.path(src),
+        .root_source_file = b.path("src/launcher.zig"),
         .target = target,
         .optimize = optimize,
         .red_zone = false,
@@ -39,7 +41,7 @@ fn addDemo(
 
     exe.addCSourceFile(.{ .file = b.path("src/stub.c") });
 
-    exe.addCSourceFile(.{ .file = b.path("example/example.c") });
+    exe.addCSourceFile(.{ .file = b.path(src) });
     exe.addIncludePath(.{ .cwd_relative = "/usr/include" });
 
     exe.entry = .{ .symbol_name = "z_start" };
