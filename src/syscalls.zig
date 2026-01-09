@@ -87,7 +87,7 @@ fn checkError(rc: isize) isize {
 
 // Syscall wrappers
 
-pub export fn exit(status: c_int) noreturn {
+pub fn exit(status: c_int) noreturn {
     _ = syscall1(SYS_exit, @bitCast(@as(isize, status)));
     unreachable;
 }

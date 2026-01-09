@@ -9,7 +9,6 @@ const callbacks_t = struct {
     dlclose: ?*const fn (__handle: ?*anyopaque) callconv(.c) c_int,
     dlsym: ?*const fn (noalias __handle: ?*anyopaque, noalias __name: [*c]const u8) callconv(.c) ?*anyopaque,
     dlerror: ?*const fn () callconv(.c) [*c]u8,
-    getauxval: ?*const fn (__type: c_ulong) c_ulong,
 };
 
 var callbacks: callbacks_t = .{
@@ -17,7 +16,6 @@ var callbacks: callbacks_t = .{
     .dlclose = null,
     .dlsym = null,
     .dlerror = null,
-    .getauxval = null,
 };
 
 export fn dlopen(__file: [*c]const u8, __mode: c_int) ?*anyopaque {
@@ -34,13 +32,9 @@ export fn dlerror() [*c]u8 {
     return callbacks.dlerror.?();
 }
 
-export fn getauxval(__file: c_ulong) c_ulong {
-    return callbacks.getauxval.?(__file);
-}
-
 fn appMain(_: c_int, _: [*][*:0]u8) c_int {
     var argv = [_][*:0]const u8{ "/bin/sleep", "0" };
-    LoaderImpl.execElf("/bin/sleep", 2, @ptrCast(&argv));
+    LoaderImpl.execElf("/bin/sleep", argv.len, @ptrCast(&argv));
     return 1;
 }
 
@@ -51,7 +45,6 @@ fn fdlMain(ctx: *fdl.Context) void {
     callbacks.dlclose = ctx.dlsym(handle, "dlclose", @TypeOf(callbacks.dlclose)).?;
     callbacks.dlsym = ctx.dlsym(handle, "dlsym", @TypeOf(callbacks.dlsym)).?;
     callbacks.dlerror = ctx.dlsym(handle, "dlerror", @TypeOf(callbacks.dlerror)).?;
-    callbacks.getauxval = ctx.dlsym(handle, "getauxval", @TypeOf(callbacks.getauxval)).?;
 
     __populate_libc_table();
 
