@@ -22,6 +22,7 @@
 #include "glad.h"
 extern void free(void *);
 extern int sscanf(const char *restrict, const char *restrict, ...);
+extern int printf(const char *, ...);
 
 #include <string.h>
 
@@ -592,8 +593,6 @@ PFNGLVERTEX4SVPROC glad_glVertex4sv = NULL;
 PFNGLVERTEXPOINTERPROC glad_glVertexPointer = NULL;
 PFNGLVIEWPORTPROC glad_glViewport = NULL;
 static void load_GL_VERSION_1_0(GLADloadproc load) {
-  if (!GLAD_GL_VERSION_1_0)
-    return;
   glad_glCullFace = (PFNGLCULLFACEPROC)load("glCullFace");
   glad_glFrontFace = (PFNGLFRONTFACEPROC)load("glFrontFace");
   glad_glHint = (PFNGLHINTPROC)load("glHint");
@@ -907,8 +906,6 @@ static void load_GL_VERSION_1_0(GLADloadproc load) {
   glad_glTranslatef = (PFNGLTRANSLATEFPROC)load("glTranslatef");
 }
 static void load_GL_VERSION_1_1(GLADloadproc load) {
-  if (!GLAD_GL_VERSION_1_1)
-    return;
   glad_glDrawArrays = (PFNGLDRAWARRAYSPROC)load("glDrawArrays");
   glad_glDrawElements = (PFNGLDRAWELEMENTSPROC)load("glDrawElements");
   glad_glGetPointerv = (PFNGLGETPOINTERVPROC)load("glGetPointerv");
@@ -964,7 +961,7 @@ static void find_coreGL(void) {
    */
   int i, major, minor;
 
-  const char *version;
+  const char *version = NULL;
   const char *prefixes[] = {"OpenGL ES-CM ", "OpenGL ES-CL ", "OpenGL ES ",
                             NULL};
 
@@ -980,13 +977,14 @@ static void find_coreGL(void) {
     }
   }
 
+  printf("version %s\n", version);
   /* PR #18 */
   sscanf(version, "%d.%d", &major, &minor);
 
-  GLVersion.major = major;
-  GLVersion.minor = minor;
-  max_loaded_major = major;
-  max_loaded_minor = minor;
+  GLVersion.major = 1;
+  GLVersion.minor = 0;
+  max_loaded_major = 1;
+  max_loaded_minor = 0;
   GLAD_GL_VERSION_1_0 = (major == 1 && minor >= 0) || major > 1;
   GLAD_GL_VERSION_1_1 = (major == 1 && minor >= 1) || major > 1;
   if (GLVersion.major > 1 || (GLVersion.major >= 1 && GLVersion.minor >= 1)) {
@@ -1003,7 +1001,6 @@ int gladLoadGLLoader(GLADloadproc load) {
     return 0;
   if (glGetString(GL_VERSION) == NULL)
     return 0;
-  find_coreGL();
   load_GL_VERSION_1_0(load);
   load_GL_VERSION_1_1(load);
 

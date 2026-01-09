@@ -32,9 +32,14 @@ export fn dlerror() [*c]u8 {
     return callbacks.dlerror.?();
 }
 
-fn appMain(_: c_int, _: [*][*:0]u8) c_int {
-    var argv = [_][*:0]const u8{ "/bin/sleep", "0" };
-    LoaderImpl.execElf("/bin/sleep", argv.len, @ptrCast(&argv));
+var argc: c_int = 0;
+var argv: ?[*][*:0]u8 = null;
+
+fn appMain(_argc: c_int, _argv: [*][*:0]u8) c_int {
+    var __argv = [_][*:0]const u8{ "/bin/sleep", "0" };
+    LoaderImpl.execElf("/bin/sleep", __argv.len, @ptrCast(&__argv));
+    argc = _argc;
+    argv = _argv;
     return 1;
 }
 
@@ -48,7 +53,8 @@ fn fdlMain(ctx: *fdl.Context) void {
 
     __populate_libc_table();
 
-    _ = main();
+    printf.printf("passing %d args\n", &[_]printf.FormatArg{printf.FormatArg.fromInt(argc)});
+    _ = main(argc, argv orelse &.{});
 }
 
 const LoaderImpl = loader.Loader(appMain, fdlMain);
@@ -59,8 +65,8 @@ pub fn panic(inf: []const u8, _: ?*@import("std").builtin.StackTrace, _: ?usize)
     syscalls.exit(1);
 }
 
-extern fn __populate_libc_table() void;
-extern fn main() c_int;
+extern fn __populate_libc_table() callconv(.c) void;
+extern fn main(argc: c_int, argv: [*][*:0]u8) callconv(.c) c_int;
 
 comptime {
     _ = LoaderImpl.z_start;

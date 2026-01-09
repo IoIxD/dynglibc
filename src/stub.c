@@ -2734,6 +2734,10 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   LOAD_FN_MATH(y0);
   LOAD_FN_MATH(y1);
   LOAD_FN_MATH(yn);
+  if (!libcFunctionTable.__assert_fail) {
+    libcFunctionTable.printf("[WARNING] __assert_fail not found, failed "
+                             "assertions will segfault.\n");
+  }
 }
 
 size_t __fbufsize(FILE *stream) { return libcFunctionTable.__fbufsize(stream); }
@@ -2939,6 +2943,8 @@ int asprintf(char **ptr, const char *template, ...) {
 void __assert_fail(const char *assertion, const char *file, unsigned int line,
                    const char *function) {
   libcFunctionTable.__assert_fail(assertion, file, line, function);
+  while (1) {
+  }
 }
 void __builtin_assert(int expression) {
   return libcFunctionTable.__builtin_assert(expression);
