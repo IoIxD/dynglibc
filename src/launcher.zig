@@ -25,7 +25,7 @@ export fn dlclose(__handle: ?*anyopaque) c_int {
     return callbacks.dlclose.?(__handle);
 }
 export fn dlsym(noalias __handle: ?*anyopaque, noalias __name: [*c]const u8) ?*anyopaque {
-    printf.printf("dlsym'ing %s\n", &[_]printf.FormatArg{printf.FormatArg.fromStr(__name)});
+    // printf.printf("dlsym'ing %s\n", &[_]printf.FormatArg{printf.FormatArg.fromStr(__name)});
     return callbacks.dlsym.?(__handle, __name);
 }
 export fn dlerror() [*c]u8 {

@@ -1518,6 +1518,7 @@ __attribute__((visibility("default"))) void __populate_libc_table() {
   libcFunctionTable.__builtin_assert = dlsym(libc, "__builtin_assert");
   libcFunctionTable.__assert_fail = dlsym(libc, "__assert_fail");
   libcFunctionTable.memset = dlsym(libc, "memset");
+  assert(libcFunctionTable.memset);
 
   libcFunctionTable.memset(&libcFunctionTable, 0, sizeof(libcFunctionTable));
 
@@ -4227,9 +4228,9 @@ void *memchr(const void *block, int c, size_t size) {
 int memcmp(const void *a1, const void *a2, size_t size) {
   return libcFunctionTable.memcmp(a1, a2, size);
 }
-void *memcpy(void *restrict to, const void *restrict from, size_t size) {
-  return libcFunctionTable.memcpy(to, from, size);
-}
+// void *memcpy(void *restrict to, const void *restrict from, size_t size) {
+// return libcFunctionTable.memcpy(to, from, size);
+// }
 int memfd_create(const char *name, unsigned int flags) {
   return libcFunctionTable.memfd_create(name, flags);
 }
@@ -4240,18 +4241,18 @@ void *memmem(const void *haystack, size_t haystack_len, const void *needle,
              size_t needle_len) {
   return libcFunctionTable.memmem(haystack, haystack_len, needle, needle_len);
 }
-void *memmove(void *to, const void *from, size_t size) {
-  return libcFunctionTable.memmove(to, from, size);
-}
+// void *memmove(void *to, const void *from, size_t size) {
+// return libcFunctionTable.memmove(to, from, size);
+// }
 void *mempcpy(void *restrict to, const void *restrict from, size_t size) {
   return libcFunctionTable.mempcpy(to, from, size);
 }
 void *memrchr(const void *block, int c, size_t size) {
   return libcFunctionTable.memrchr(block, c, size);
 }
-void *memset(void *block, int c, size_t size) {
-  return libcFunctionTable.memset(block, c, size);
-}
+// void *memset(void *block, int c, size_t size) {
+//   return libcFunctionTable.memset(block, c, size);
+// }
 int mkdir(const char *filename, mode_t mode) {
   return libcFunctionTable.mkdir(filename, mode);
 }
